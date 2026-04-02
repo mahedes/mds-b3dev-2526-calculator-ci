@@ -34,6 +34,8 @@ jobs:
           path: .
 
   deploy:
+    #if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && needs.build.result == 'success' }}
     needs: build
     runs-on: ubuntu-latest
 
