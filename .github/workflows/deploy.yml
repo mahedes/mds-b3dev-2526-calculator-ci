@@ -1,8 +1,12 @@
 name: Deploy - GitHub Pages
 
 on:
-  push:
-    branches: [ main ]
+  workflow_run:
+    workflows: ["CI"]   # écoute ton workflow CI
+    types:
+      - completed
+  #push:
+    #branches: [ main ]
 
 permissions:
   contents: read
@@ -15,6 +19,7 @@ concurrency:
 
 jobs:
   build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} # ici bloque le déploiement
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
